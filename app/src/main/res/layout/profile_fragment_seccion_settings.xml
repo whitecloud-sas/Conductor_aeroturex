@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/text_margin">
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="false"
+        android:text="Climatizado"
+        android:textColor="@color/primary"
+        android:linksClickable="true"
+        android:autoLink="web"
+        android:id="@+id/cb_1"
+        android:textColorLink="@color/accent"
+        android:theme="@style/profileCheckBox" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="false"
+        android:text="Portabicicletas"
+        android:textColor="@color/primary"
+        android:linksClickable="true"
+        android:autoLink="web"
+        android:id="@+id/cb_2"
+        android:textColorLink="@color/accent"
+        android:theme="@style/profileCheckBox" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="false"
+        android:text="Silla de ruedas"
+        android:textColor="@color/primary"
+        android:linksClickable="true"
+        android:autoLink="web"
+        android:id="@+id/cb_3"
+        android:textColorLink="@color/accent"
+        android:theme="@style/profileCheckBox" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="false"
+        android:text="Bodega amplia"
+        android:textColor="@color/primary"
+        android:linksClickable="true"
+        android:autoLink="web"
+        android:id="@+id/cb_4"
+        android:textColorLink="@color/accent"
+        android:theme="@style/profileCheckBox" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="false"
+        android:text="Parrilla"
+        android:textColor="@color/primary"
+        android:linksClickable="true"
+        android:autoLink="web"
+        android:id="@+id/cb_5"
+        android:textColorLink="@color/accent"
+        android:theme="@style/profileCheckBox" />
+
+</LinearLayout>

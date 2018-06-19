@@ -1,0 +1,203 @@
+<resources>
+    // Generales
+    <string name="app_name">Aeroturex Conductor</string>
+    <string name="empresa">44</string>
+    <string name="access_token">pk.eyJ1Ijoid2hpdGVjbG91ZCIsImEiOiJjaXFncXo1OWYwNDI5Zm9uZXhwNWZpbHowIn0.zmHwLgVhdsVExBTBE3Bnsg</string>
+    // Registro
+    <string name="reg_name">Nombre Completo</string>
+    <string name="img_url">https://www.servidor.com.co/aeroturex/_lib/file/</string>
+    <string name="reg_email">Email</string>
+    <string name="reg_celular">Celular</string>
+    <string name="reg_terms">Acepto los <a href="http://google.com">Términos de Servicio</a> y <a href="http://facebook.com">Política de Privacidad</a></string>
+    <string name="reg_btn">Crear cuenta</string>
+    //Inicio_sesion
+    <string name="is_btn">Ingresar</string>
+    <string name="is_usuario">Usuario</string>
+    <string name="is_clave">Contraseña</string>
+    // MainActivity
+    <string name="hint_direccion">Dirección de destino</string>
+    <string name="main_btn">Ponerme disponible</string>
+    <string name="hint_marker">Enviar el servicio aquí</string>
+    <string name="vertical_ellipsis">&#8942;</string>
+    <string name="pin_location">Indicar lugar en el mapa</string>
+    // Menú
+    <string name="item_taxis">Inicio</string>
+    <string name="item_leer_qr">Leer QR</string>
+    <string name="item_direcciones">Direcciones</string>
+    <string name="item_Servicios">Servicios</string>
+    <string name="item_chat">Chats</string>
+    <string name="item_conf">Configuración</string>
+    <string name="item_perfil">Perfil</string>
+    <string name="item_acerca_de">Acerca de</string>
+    <string name="item_pago">Medios de Pago</string>
+    <string name="item_salir">Cerrar sesión</string>
+    <string name="title_activity_principal">principal</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    // Más info
+    <string name="moreinfo_title">Información adicional</string>
+    <string name="moreinfo_hint">¿Alguna información adicional que nos permita ubicarte?</string>
+    // Servicio
+    <string name="bs_moreInfo_solicitar">Solicitar</string>
+    <string name="bs_call">Llamar</string>
+    <string name="bs_chat">Chat</string>
+    <string name="bs_cancel">Cancelar</string>
+    <string name="title_activity_address">Address</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="buscando_servicio">Buscando vehículo disponible...</string>
+    // BS Add Direcciones
+    <string name="dir_spinner_title">Tipo</string>
+    <string name="hint_name">Nombre</string>
+    <string name="hint_direccion_modal">Dirección</string>
+    <string-array name="tipo_direcciones">
+        <item>Casa</item>
+        <item>Oficina</item>
+        <item>Otro</item>
+    </string-array>
+    <string name="btn_add_direccion">Agregar</string>
+    // Direcciones
+    <string name="label_direcciones">Lista de Direcciones</string>
+    // Servicios
+    <string name="label_servicios">Historial de Servicios</string>
+    // Chat
+    <string name="label_chat">Historial de Chats</string>
+    // BS Profile
+    <string name="btn_edit_profile">Guardar</string>
+    <string name="add_payment">Agregar método de pago</string>
+    <string name="add_pay_card">Número de la tarjeta</string>
+    <string name="add_pay_date">MM/YY</string>
+    <string name="add_pay_cvv">CVV</string>
+    <string name="add_pay_name">Nombre Completo</string>
+    <string name="add_pay_address">Dirección</string>
+    <string name="bs_modal_btn_back">Cerrar</string>
+    //Service Aproval
+    <string name="bs_modal_btn_accept">Aceptar</string>
+    <string name="bs_modal_btn_reject">Rechazar</string>
+    //Service Arrival
+    <string name="bs_modal_btn_actions">Acciones</string>
+    <string name="bs_modal_tv_calificacion">Calificación de Usuario</string>
+    //Tarificacion
+    <string name="bs_modal_btn_cobrar">Cobrar</string>
+    // Cobro
+    <string name="bs_atras">Atrás</string>
+    <string name="bs_cerrar">Cerrar</string>
+    <string name="bs_cobrar">Cobrar</string>
+    <string name="bs_finalizar">Finalizar Servicio</string>
+    <string name="clave_vale">Clave del Vale</string>
+    <string name="valor_vale">Valor del vale</string>
+    // Rating
+    <string name="heading_text">Califica tu último viaje</string>
+    <string name="enviar_rating">Enviar</string>
+    // Actions
+    <string name="bs_aceptar">Aceptar</string>
+    //Cumplir
+    <string name="clave_servicio">Clave del Servicio</string>
+    <string name="bs_cumplir">Escanear QR</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="action_about">Acerca de...</string>
+    <string name="info_dialog_description">Desarrollada por White Cloud S.A.S, Derechos reservados.\nVersión</string>
+
+
+    <!--Notification-->
+    <string name="notification_ticker_text">OSMTracker está trazando</string>
+    <string name="notification_title">OSMTracker está trazando (#{0})</string>
+    <string name="notification_text">Pulse aquí para mostrar la pantalla principal</string>
+
+    <string name="osm_visibility_private">Privado</string>
+    <string name="osm_visibility_public">Público</string>
+    <string name="osm_visibility_trackable">Trazable</string>
+    <string name="osm_visibility_identifiable">Identificable</string>
+
+    <string name="error_externalstorage_not_writable">No se puede grabar en el almacenamiento externo.</string>
+    <string name="wpt_stillimage">Foto</string>
+    <string name="wpt_voicerec">Grabación de voz</string>
+    <string name="gpsstatus_record_textnote">Nota de texto</string>
+
+    <!-- TrackLogger -->
+    <string name="tracklogger">Grabadora de trazas</string>
+    <string name="tracklogger_waiting_gps">Esperando la señal de GPS para habilitar los botones…</string>
+    <string name="tracklogger_voicerec_title">Grabación de voz</string>
+    <string name="tracklogger_voicerec_text">Grabando un sonido de {0} s.</string>
+    <string name="tracklogger_voicerec_stop">Detener</string>
+    <string name="tracklogger_btnBack">Atrás</string>
+    <string name="tracklogger_tracked">Trazado: </string>
+    <string name="tracklogger_gps_disabled">GPS desactivado</string>
+    <string name="tracklogger_gps_disabled_hint">El GPS está desactivado. ¿Desea activarlo?</string>
+    <string name="tracklogger_choose_gallery_camera">¿Galería o cámara?</string>
+    <string name="tracklogger_camera">Tomar foto con la cámara</string>
+    <string name="tracklogger_gallery">Seleccionar foto desde la galería</string>
+
+    <string name="error_voicerec_failed">La grabación de voz ha fallado</string>
+
+    <string name="etUsuario" />
+    <string name="etClave" />
+    <string name="btnIniciaSesion">Iniciar Sesión</string>
+    <string name="btnPista">Pista</string>
+    <string name="hintUsuario">Usuario</string>
+    <string name="hintCLave">Clave</string>
+    <string name="btnDisponible">Ponerme Disponible</string>
+    <string name="btnPanico">PÁNICO</string>
+    <string name="btnDireccion">Dirección</string>
+    <string name="btnRegresar">Regresar</string>
+    <string name="add">+</string>
+    <string name="delete">-</string>
+    <string name="disponible">Disponible</string>
+    <string name="mensajes">Mensajes</string>
+    <string name="servicios">Servicios</string>
+    <string name="salir">Salir</string>
+    <string name="salirmayus">SALIR</string>
+    <string name="txtClave">Clave      .</string>
+    <string name="txtContrasena">Código</string>
+    <string name="btnCumplir">Cumple</string>
+    <string name="btnTurno">Turno</string>
+    <string name="btnNoDisponible">Ponerme Ocupado</string>
+    <string name="btnCancelar">Cancela</string>
+    <string name="btnFrente">En Sitio</string>
+    <string name="btnRechazar">Rechazar</string>
+    <string name="btnWaze">Waze</string>
+    <string name="Info">Consultar</string>
+    <string name="btnContestar">Contestar</string>
+    <string name="myimage"/>
+    <string name="radio_NA">No Atienden</string>
+    <string name="radio_NP">No Pidieron</string>
+    <string name="radio_SF">Se Fueron</string>
+    <string name="radio_DE">Dirección Errada</string>
+    <string name="radio_PA">Pasajero Alicorado</string>
+    <string name="btnConfirmaCancelar">Confirmar Cancelación</string>
+    <string name="ViewBienvenido">Bienvenido</string>
+    <string name="btnEnviarMsg">Enviar Mensaje</string>
+    <string name="txtMen">Mensaje a Call Center</string>
+    <string name="btnBorrarMsg">Borrar Mensaje</string>
+    <string name="btnMsgPredeterminado">Mensaje Básico</string>
+    <string name="radioLlamada">Llamar al Usuario</string>
+    <string name="radioNombre">Solicitar Nombre</string>
+    <string name="btnPredeterminado">Enviar Mensaje</string>
+    <string name="btnMensajes">Mensajes</string>
+    <string name="btnMapa">Mapa</string>
+    <string name="enviarMSG">Enviar Mensaje</string>
+    <string name="title_activity_gmap">GMap</string>
+    <string name="title_activity_inicio">Inicio</string>
+    <string name="drawer_item_settings">Inicio</string>
+    <string name="drawer_item_home">Inicio</string>
+
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <string name="title_activity_prueba_gmaps">Map</string>
+</resources>

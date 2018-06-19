@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_driver"
+                android:gravity="left"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
+                    android:src="@drawable/driver"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/primary"
+                    android:elevation="16dp"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
+                    android:src="@drawable/car"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/primary"
+                    android:elevation="8dp"
+                    android:layout_marginLeft="51dp"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.45"
+                android:orientation="vertical"
+                android:layout_marginLeft="4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Gabriel Gómez"
+                    android:gravity="left|top" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Kia Picanto"
+                    android:gravity="left|top" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Placa: CDE 478"
+                    android:gravity="left|top" />
+
+                <RatingBar
+                    android:numStars="5"
+                    android:rating="4.2"
+                    android:stepSize="0.1"
+                    android:isIndicator="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:progressTint="@color/primary_dark"
+                    android:progressBackgroundTint="@color/primary"
+                    android:secondaryProgressTint="@color/primary_dark"
+                    style="?android:attr/ratingBarStyleSmall" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="0.25"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Clave"
+                    android:gravity="center|top" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:text="14"
+                    android:gravity="center|top" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_call"
+                android:layout_weight="0.5"
+                android:text="@string/bs_call"
+                android:layout_marginRight="12dp"
+                android:theme="@style/bsButton"
+                android:textColor="@color/icons"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_chat_bs"
+                android:padding="12dp"
+                android:layout_weight="0.5"
+                android:text="@string/bs_chat"
+                android:layout_marginLeft="12dp"
+                android:theme="@style/bsButton"
+                android:id="@+id/bs_chat"
+                android:textColor="@color/icons"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="70dp">
+
+            <Button
+                android:id="@+id/btn_cancelService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bs_cancel"
+                android:layout_gravity="start|bottom"
+                android:layout_alignParentStart="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/primary"
+                style="?borderlessButtonStyle" />
+
+            <Button
+                android:id="@+id/btn_share"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_share"
+                android:layout_gravity="end|bottom"
+                android:layout_alignParentEnd="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        </RelativeLayout>
+    </LinearLayout>

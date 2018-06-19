@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_phone"
+                android:layout_margin="@dimen/text_margin"
+                android:tint="@color/primary_light"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/tv_celular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0722325092"
+                android:textColor="@color/primary"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_email"
+                android:layout_margin="@dimen/text_margin"
+                android:tint="@color/primary_light"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/tv_correo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hector@gmail.com"
+                android:textColor="@color/primary"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_car"
+                android:layout_margin="@dimen/text_margin"
+                android:tint="@color/primary_light"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/tv_placa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Placa VGD 678"
+                android:textColor="@color/primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_car"
+                android:layout_margin="@dimen/text_margin"
+                android:tint="@color/primary_light"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/tv_modelo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modelo 2017"
+                android:textColor="@color/primary"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_car"
+                android:layout_margin="@dimen/text_margin"
+                android:tint="@color/primary_light"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/tv_movil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Móvil 5023"
+                android:textColor="@color/primary"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_history"
+                android:layout_margin="@dimen/text_margin"
+                android:tint="@color/primary_light"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/tv_vigencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vigencia 2017-08-08 09:00:00"
+                android:textColor="@color/primary"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

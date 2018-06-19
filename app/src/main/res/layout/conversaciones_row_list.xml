@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chauthai.swipereveallayout.SwipeRevealLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    app:dragEdge="right"
+    app:mode="same_level">
+
+    <FrameLayout
+        android:id="@+id/delete_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:background="#ffcc0000">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
+            android:text="Eliminar"/>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Origen"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/primary_text"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_toStartOf="@+id/conversacion_go" />
+
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:paddingTop="6dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Último Mensaje"
+            android:textColor="@color/primary"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/conversacion_go" />
+
+        <Button
+            android:id="@+id/conversacion_go"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/chevron_right"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <TextView
+            android:id="@+id/textViewBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="12sp"
+            android:background="@drawable/bage_circle"
+            android:layout_alignBottom="@+id/content"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

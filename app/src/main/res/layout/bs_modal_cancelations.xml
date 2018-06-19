@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_weight="0.5"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:text="Acciones"/>
+        </LinearLayout>
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:id="@+id/rg_cancelations"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <RadioButton
+        android:id="@+id/rb_1"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:text="No conoce la Clave" />
+    <RadioButton
+        android:id="@+id/rb_2"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="No Atienden" />
+    <RadioButton
+        android:id="@+id/rb_3"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:text="No Pidieron" />
+    <RadioButton
+        android:id="@+id/rb_4"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:text="Se fueron" />
+        <RadioButton
+            android:id="@+id/rb_5"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:text="Dirección Errada" />
+        <RadioButton
+            android:id="@+id/rb_6"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:text="Pasajero alicorado" />
+</RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="1dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_cancelar_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bs_cerrar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/primary"
+                style="?borderlessButtonStyle"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+    </LinearLayout>

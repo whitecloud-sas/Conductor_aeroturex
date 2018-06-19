@@ -1,0 +1,193 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapaPrincipalFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_ppal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rl_tarificador"
+            android:layout_marginTop="25dp"
+            tools:context=".MapaPrincipalFragment"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <fragment
+                android:id="@+id/map"
+                class="com.google.android.gms.maps.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/imageMiLocation"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/app_name"
+                android:src="@mipmap/taxipluslocation" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_ppal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <!-- Floating action button -->
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/locate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@android:drawable/ic_menu_mylocation"
+                    app:backgroundTint="@color/fab_gris"
+                    app:fabSize="mini"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_solicitar"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <!-- Boton Principal -->
+                <Button
+                    android:id="@+id/btn_solicitar"
+                    style="Widget.AppCompat.Button.Colored"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="26dp"
+                    android:background="@color/accent"
+                    android:text="@string/main_btn"
+                    android:textColor="@color/icons"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="0dp" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tarificador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/cl_service_tarificacion"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+                <include layout="@layout/bs_modal_service_tarificacion" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/cl_rating_"
+                android:gravity="bottom"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+                <include layout="@layout/fragment_rating" />
+            </android.support.constraint.ConstraintLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <!-- Bottom Sheet Content -->
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/bottomSheetWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <include layout="@layout/bottom_sheet_container" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_pista"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:orientation="horizontal"
+        android:elevation="16dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_pista"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Pista Tunjuelito\nTurno 92 de 92 Atrás de WWW999"
+            android:textColor="@color/primary_dark"
+            android:padding="8dp"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:elevation="12dp"
+            android:textColorHint="@color/cast_expanded_controller_background_color"
+            android:layout_toStartOf="@+id/switch_turno"
+            />
+
+        <Switch
+            android:id="@+id/switch_turno"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:theme="@style/BrandedSwitch.control"
+            android:layout_alignBottom="@+id/tv_pista"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_tiempo_espera"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:elevation="16dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_tiempo_espera"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiempo de Espera: 00:00:00"
+            android:textColor="@color/primary_dark"
+            android:padding="8dp"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:elevation="12dp"
+            android:textColorHint="@color/cast_expanded_controller_background_color"
+            android:layout_toStartOf="@+id/switch_tiempo_espera"
+            />
+
+        <Switch
+            android:id="@+id/switch_tiempo_espera"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:theme="@style/BrandedSwitch.control"
+            android:layout_alignBottom="@+id/tv_tiempo_espera"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,0 +1,141 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.whitecloud.conductor724.whiteclouduser.com.whitecloud.hm.ChatFragment"
+    android:background="@color/colorBg">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/primary_dark">
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:id="@+id/info_container"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/driver"
+                    app:civ_border_width="2dp"
+                    android:layout_gravity="center_vertical"
+                    app:civ_border_color="@color/primary"
+                    android:elevation="16dp"/>
+
+                <!-- <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_phone"
+                    android:tint="@color/primary_text"
+                    android:layout_margin="@dimen/text_margin"/> -->
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gabriel Gómez"
+                        android:textSize="16dp"
+                        android:textColor="@color/primary_text"
+                        android:textAlignment="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Escribiendo..."
+                        android:textSize="10dp"
+                        android:textColor="@color/secondary_text"
+                        android:textAlignment="center"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_phone"
+                    android:tint="@color/primary_text"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/text_margin"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="@dimen/text_margin"
+            android:layout_marginStart="@dimen/text_margin">
+
+            <include layout="@layout/fragment_chat_driver_message" />
+            <include layout="@layout/fragment_chat_user_message" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:id="@+id/write_layout"
+        android:orientation="horizontal"
+        android:background="@color/primary_dark"
+        android:layout_gravity="bottom"
+        android:paddingLeft="@dimen/text_margin"
+        android:paddingRight="@dimen/text_margin"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/et_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text"
+            android:hint="Escribe tu mensaje..."
+            android:textSize="12sp"
+            android:clickable="true"
+            android:textColorHint="@color/secondary_text"
+            android:layout_alignParentBottom="true"
+            android:inputType="textMultiLine" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:src="@drawable/ic_send_text"
+        android:layout_gravity="center_vertical|end"
+        app:backgroundTint="@color/accent"
+        app:layout_anchor="@+id/write_layout"
+        app:layout_anchorGravity="top|end" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_weight="0.5"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:text="Ingresar clave del Servicio"/>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:weightSum="1"
+        android:layout_marginTop="1dp">
+
+        <EditText
+            android:id="@+id/clave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/clave_servicio"
+            android:inputType="number"
+            android:lines="1"
+            android:minLines="1"
+            android:maxLines="1"
+            android:maxLength="2"
+            android:layout_weight="1"
+            android:layout_toStartOf="@+id/valor_vale" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="1dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_cumplir_cerrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bs_cerrar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/primary"
+                style="?borderlessButtonStyle"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/btn_cobrar" />
+
+            <Button
+                android:id="@+id/btn_cumplir"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bs_cumplir"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/accent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+    </LinearLayout>

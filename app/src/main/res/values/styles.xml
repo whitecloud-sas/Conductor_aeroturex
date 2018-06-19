@@ -1,0 +1,55 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="colorControlNormal">@color/primary_dark</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="textColorError">@color/accent</item>
+    </style>
+    <!-- CheckBox theme. -->
+    <style name="wcCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/primary_light</item>
+        <item name="colorControlActivated">@color/accent</item>
+    </style>
+    <!-- Rating bars -->
+    <style name="CustomRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/primary_light</item>
+        <item name="colorControlActivated">@color/primary_dark</item>
+    </style>
+    <!-- Raised Buttons -->
+    <style name="bsButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/primary_dark</item>
+        <item name="colorButtonNormal">@color/primary</item>
+    </style>
+    <!-- TextInput Dialog -->
+    <style name="InputLayoutDialog" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textColorHint">@color/primary_light</item>
+        <item name="colorControlNormal">@color/primary_dark</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="textColorError">@color/accent</item>
+    </style>
+    <!-- Tabs -->
+    <style name="TabTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <!-- CheckBox prodile -->
+    <style name="profileCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/primary</item>
+        <item name="colorControlActivated">@color/accent</item>
+    </style>
+
+    <style name="BrandedSwitch.control" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#4a4f65</item>
+        <item name="colorSwitchThumbNormal">#7AFFFFFF</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

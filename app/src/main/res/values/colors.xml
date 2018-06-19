@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBg">#ffffff</color> 
+    <color name="colorBgSheets">#ffffff</color>  
+
+    <color name="primary">#5d637c</color> 
+    <color name="primary_dark">#4a4f65</color>
+     <color name="primary_light">#b4b5bc</color>
+     <color name="accent">#025490</color> 
+    <color name="primary_text">#009FD5</color> 
+    <color name="secondary_text">#eeeeee</color> 
+    <color name="icons">#FFFFFF</color> 
+
+    <color name="divider">#BDBDBD</color>
+
+
+    <color name="disabled_color">#000000</color>
+
+    <color name="fab_gris">#E0E0E0</color>
+
+    <color name="transparent">#00000000</color>
+
+
+
+
+
+
+
+
+
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="mapboxDenim">#50667f</color>
+    <color name="mapboxTeal">#41AFA5</color>
+    <color name="mapboxOrange">#F9886C</color>
+    <color name="mapboxRed">#E55E5E</color>
+    <color name="mapboxPink">#ED6498</color>
+    <color name="mapboxMustard">#FBB03B</color>
+    <color name="mapboxNavy">#28353D</color>
+    <color name="mapboxNavyDark">#222B30</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="orange">#FF9900</color>
+    <color name="blue">#273c51</color>
+    <color name="grey">#524b4f</color>
+    <color name="green_gay">#CCFF66</color>
+    <color name="color_black">#000000</color>
+    <color name="newbg">#FFB30F</color>
+</resources>

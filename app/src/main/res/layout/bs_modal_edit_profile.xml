@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/modalBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorBgSheets">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:padding="12dp"
+        android:textColor="@color/primary_dark"
+        android:text="Editar perfil" />
+
+    <!--  Nombre -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/InputLayoutDialog">
+
+        <EditText
+            android:id="@+id/input_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/reg_name"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:inputType="textPersonName" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!--  Email -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/InputLayoutDialog">
+
+        <EditText
+            android:id="@+id/input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/reg_email"
+            android:inputType="textPostalAddress"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- Celular Label -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/InputLayoutDialog">
+
+        <EditText
+            android:id="@+id/input_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/reg_celular"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:inputType="text|phone" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- Botones -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+
+            <Button
+                android:id="@+id/btn_cancel_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bs_cancel"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/primary"
+                style="?borderlessButtonStyle" />
+
+            <Button
+                android:id="@+id/btn_save_profile"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_edit_profile"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/accent" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

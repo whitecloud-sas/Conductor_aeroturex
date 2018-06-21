@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Message;
 import android.util.Log;
 
 import com.conductor.aeroturex.MainActivity;
+import com.conductor.aeroturex.service.TaxiLujoService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -529,9 +531,9 @@ public class DBDataSource {
         return comment;
     }
 
-    public int selectUbicacionPendientes() {
+    public JSONArray selectUbicacionPendientes() {
 
-        int cantidad = -1;
+        JSONArray jArray = new JSONArray();
         String sql = "SELECT su_fecha,su_servicio,su_id,su_distancia,su_precio," +
                 "su_tiempoespera,su_velocidad,su_orientacion,su_latitud,su_longitud,su_precision,su_fechagps,su_esbuena " +
                 "FROM da " +
@@ -540,20 +542,34 @@ public class DBDataSource {
                 "ORDER BY su_fechagps";
         if (database != null) {
             Cursor c = database.rawQuery(sql, null);
-            cantidad = c.getCount();
             if (c.moveToFirst()) {
                 do {
-                    MainActivity.v_enviando_ubicaciones = true;
+                    try {
 
-                    String c_76 = "76|" + c.getString(1) + "|" + c.getString(8) + "|" + c.getString(9) + "|" + c.getString(3) + "|" + c.getString(4) + "|" + c.getString(6) + "|" + c.getString(7) + "|" + c.getString(5) + "|" + c.getString(11) + "|" + c.getString(10) + "|" + c.getString(12) + "|";
-
-                    MainActivity.servicios_ubicaciones(c_76);
+                        JSONObject jsonObj = new JSONObject();
+                        jsonObj.put("cmd", "76");
+                        jsonObj.put("servicio", c.getString(1));
+                        jsonObj.put("lat_", c.getString(8));
+                        jsonObj.put("lng_", c.getString(9));
+                        jsonObj.put("distancia", c.getString(3));
+                        jsonObj.put("precio", c.getString(4));
+                        jsonObj.put("velocidad", c.getString(6));
+                        jsonObj.put("orientacion", c.getString(7));
+                        jsonObj.put("tiempo_espera", c.getString(5));
+                        jsonObj.put("fecha_", c.getString(10));
+                        jsonObj.put("precision", c.getString(11));
+                        jsonObj.put("lat", String.valueOf(MainActivity.v_latitud));
+                        jsonObj.put("lng", String.valueOf(MainActivity.v_longitud));
+                        jsonObj.put("date_gps", String.valueOf(MainActivity.v_fechaGPS));
+                        jArray.put(jsonObj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } while (c.moveToNext());
             }
             c.close();
         }
-        MainActivity.v_enviando_ubicaciones = false;
-        return cantidad;
+        return jArray;
     }
 
     public void createUbicacion(JSONObject jObj) {

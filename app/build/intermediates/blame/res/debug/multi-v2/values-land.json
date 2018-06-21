@@ -4,17 +4,7 @@
             "outputFile": "C:\\Users\\Martin\\Documents\\StudioProjects\\Conductor_aeroturex\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-land\\values-land.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\49779678857eaa4ef0294060cea28e5f\\res\\values-land\\values-land.xml",
-                    "from": {
-                        "startLines": "2,3,4,5",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,125,189,260",
-                        "endColumns": "69,63,70,67",
-                        "endOffsets": "120,184,255,323"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\mediarouter-v7-25.2.0.aar\\091ef237b9e8b8777abb6831d504062b\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\mediarouter-v7-25.2.0.aar\\f073eef79aa93b391ff66063997241c8\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",
@@ -31,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\design-27.1.1.aar\\f0885968fba0cbcc53229c350f48daaf\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\design-27.1.1.aar\\65d6b726824ac78fdb8cc3f631aae045\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -50,7 +40,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-cast-framework-11.6.0.aar\\003eeb6e50492f1e7d0c3b00e4d8902c\\res\\values-land\\values.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-cast-framework-11.6.0.aar\\e4e189517cdb25b7b8af34a7b3182fc7\\res\\values-land\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9",
                         "startColumns": "0,0,0,0,0,0",
@@ -64,6 +54,16 @@
                         "startOffsets": "328,413,497,571,644,743",
                         "endColumns": "84,83,73,72,98,94",
                         "endOffsets": "408,492,566,639,738,833"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\6a19a2dd312a8c6f20311fcdfc4c636e\\res\\values-land\\values-land.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,125,189,260",
+                        "endColumns": "69,63,70,67",
+                        "endOffsets": "120,184,255,323"
                     }
                 }
             ]

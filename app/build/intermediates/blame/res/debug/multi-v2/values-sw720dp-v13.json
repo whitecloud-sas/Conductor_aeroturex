@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\Martin\\Documents\\StudioProjects\\Conductor_aeroturex\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sw720dp-v13\\values-sw720dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\mediarouter-v7-25.2.0.aar\\091ef237b9e8b8777abb6831d504062b\\res\\values-sw720dp-v13\\values-sw720dp-v13.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\mediarouter-v7-25.2.0.aar\\f073eef79aa93b391ff66063997241c8\\res\\values-sw720dp-v13\\values-sw720dp-v13.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\core-0.8.5.9.aar\\a6355c3c47c2af0b4fe6ad7a917c49b3\\res\\values-sw720dp-v13\\values-sw720dp-v13.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\core-0.8.5.9.aar\\27f1212e7066ae0908c0358c0818914b\\res\\values-sw720dp-v13\\values-sw720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

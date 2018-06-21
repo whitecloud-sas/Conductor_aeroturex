@@ -4,7 +4,18 @@
             "outputFile": "C:\\Users\\Martin\\Documents\\StudioProjects\\Conductor_aeroturex\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v11\\values-v11.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\zxing-android-embedded-3.3.0.aar\\30eb20b092682bd7b44338e25f17f970\\res\\values-v11\\values-v11.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\core-0.8.5.9.aar\\27f1212e7066ae0908c0358c0818914b\\res\\values-v11\\values-v11.xml",
+                    "from": {
+                        "startLines": "2,19",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,1094",
+                        "endLines": "18,35",
+                        "endColumns": "12,12",
+                        "endOffsets": "1089,2110"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\zxing-android-embedded-3.3.0.aar\\cae941a55600bbd9957e6f9e6f4acc58\\res\\values-v11\\values-v11.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -23,18 +34,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\core-0.8.5.9.aar\\a6355c3c47c2af0b4fe6ad7a917c49b3\\res\\values-v11\\values-v11.xml",
-                    "from": {
-                        "startLines": "2,19",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,1094",
-                        "endLines": "18,35",
-                        "endColumns": "12,12",
-                        "endOffsets": "1089,2110"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-appinvite-11.6.0.aar\\1eed5d85d56cbaf171287d08d5231f47\\res\\values-v11\\values.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-appinvite-11.6.0.aar\\72f829fb15d821fd98705a2d2446ab3a\\res\\values-v11\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",

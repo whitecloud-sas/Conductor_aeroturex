@@ -67,6 +67,7 @@
         android:label="@string/app_name"
         android:persistent="true"
         android:supportsRtl="true"
+        android:testOnly="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.conductor.aeroturex.SplashScreen"
@@ -100,27 +101,16 @@
             android:windowSoftInputMode="adjustResize" />
 
         <service
-            android:name="com.conductor.aeroturex.service.gps.GPSLogger"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.conductor.aeroturex.intent.GPS_SERVICE" />
-            </intent-filter>
-        </service>
-
-        <provider
-            android:name="com.conductor.aeroturex.db.TrackContentProvider"
-            android:authorities="com.conductor.aeroturex.provider"
+            android:name="com.conductor.aeroturex.service.TaxiLujoService"
+            android:enabled="true"
             android:exported="false" />
-
-        <receiver android:name="com.conductor.aeroturex.receiver.MediaButtonReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </receiver>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6c4909116d839e904ba4058f9a63e1fb5e1de63d" />
 
         <receiver android:name="com.google.android.gms.cast.framework.media.MediaIntentReceiver" />
 
@@ -270,6 +260,12 @@ Service handling Google Sign-In user revocation. For apps that do not integrate 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="com.crashlytics.android.CrashlyticsInitProvider"
+            android:authorities="com.conductor.aeroturex.crashlyticsinitprovider"
+            android:exported="false"
+            android:initOrder="100" />
     </application>
 
 </manifest>

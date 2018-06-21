@@ -99,9 +99,6 @@ public class Fragment_swipe_servicios extends Fragment {
         log("createList");
         try {
             JSONArray jArr = Inicio_sesion.datasource.getAllRegs(Constants.DB.SERVICIO);
-            //{"nombre":"Martin Figueroa","cmd":"02","desc":"0","servicio":"249","indic":"0",
-            // "dir":"Calle 36AN - 3GN 07","empresa":"0","lng":"-76.523361","unidad":"0",
-            // "barrio":"Prados del Norte","clave":"99","tipo_serv":"GEOSERVICIO","lat":"3.474372"}
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject jObj = jArr.getJSONObject(i);
                 log("servicios createList: " + jObj.toString());

@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\Martin\\Documents\\StudioProjects\\Conductor_aeroturex\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\49779678857eaa4ef0294060cea28e5f\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-27.1.1.aar\\6a19a2dd312a8c6f20311fcdfc4c636e\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\86accc44398c425ee0f80c3732c4d803\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\Martin\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-27.1.1.aar\\255cd667cca1e4fd6c8bb51a976cd4c5\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

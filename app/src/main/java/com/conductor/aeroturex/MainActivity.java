@@ -1,5 +1,7 @@
 package com.conductor.aeroturex;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
@@ -16,23 +18,29 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -66,7 +74,13 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.conductor.aeroturex.service.TaxiLujoService;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -81,15 +95,10 @@ import com.google.zxing.integration.android.IntentResult;
 import com.conductor.aeroturex.dummy.DummyContentDirecciones;
 import com.conductor.aeroturex.dummy.DummyContentHistorialChat;
 import com.conductor.aeroturex.dummy.DummyContentServicios;
-import com.conductor.aeroturex.listener.SensorListener;
 import com.conductor.aeroturex.old.Constants;
-import com.conductor.aeroturex.old.SocketTask;
 import com.conductor.aeroturex.old.Tarificador;
 import com.conductor.aeroturex.old.WakeLocker;
 import com.conductor.aeroturex.old.callAlertBox;
-import com.conductor.aeroturex.service.gps.GPSLogger;
-import com.conductor.aeroturex.service.gps.GPSLoggerServiceConnection;
-import com.conductor.aeroturex.utils.NotificationUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,12 +117,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         DireccionesFragment.OnListFragmentInteractionListener,
         ServiciosFragment.OnListFragmentInteractionListener,
-        ProfileFragment.OnFragmentInteractionListener,
         HistorialChatFragment.OnListFragmentInteractionListener,
         ChatFragment.OnFragmentInteractionListener,
         AutocompleteAddressFragment.OnFragmentInteractionListener,
         EditProfilePicFragment.OnFragmentInteractionListener,
-        SocketTask.from_SocketTask,
         TextToSpeech.OnInitListener,
         BsModalServiceArrival.On_BsModalServiceArrival_Listener,
         BsModalServiceAproval.On_BsModalServiceAproval_Listener,
@@ -127,36 +134,34 @@ public class MainActivity extends AppCompatActivity
         Fragment_conversaciones.On_Fragment_mensajes_Listener,
         Fragment_conversacion.On_Fragment_mensaje_Listener,
         callAlertBox.callAlertBox_interface,
-        GPSLogger.Callbacks,
-        MapaPrincipalFragment.On_MapaPrincipal_Listener{
+        FragmentManager.OnBackStackChangedListener,
+        MapaPrincipalFragment.On_MapaPrincipal_Listener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        android.location.LocationListener,
+        LocationListener {
 
     public static MediaPlayer mpSplash;
     public static Vibrator vibrar;
     public static AlertDialog dlg = null;
     public static TextToSpeech tts;
     public static double v_latitud = 0, v_longitud = 0, v_latitudServicio = 0, v_longitudServicio = 0, v_latitudPrevia = 0, v_longitudPrevia = 0;
-    public static int v_temporizador = 0, g = 0, reconector = 2,
+    public static int v_temporizador = 0, g = 0, reconector = 2, valor_anterior_a_la_interrupcion = 0,
             v_ubicacion, // permite enviar ubicacion actual cada 15 minutos si no ha reportado ubicación en este tiempo
             v_tamanoFuente = 20, p_distancia = 0, total = 0, v_bearing = 0, v_reconexion = 0, v_precision = 0;
-    public static String v_ttsDirBarr = "", bs_m_doc_aditional_info = "", v_dir_destino = "",
+    public static String v_ttsDirBarr = "", bs_m_doc_aditional_info = "", v_dir_destino = "", s_medio_pago = "",
             v_clave = null, v_idServicio = "", v_resultado = null, v_turno = "", empresa = "0", v_idServicioRuta = "0", v_fechaGPS = "";
-    private GPSLogger gpsLogger;
-    Intent gpsLoggerServiceIntent;
-    private ServiceConnection gpsLoggerConnection = new GPSLoggerServiceConnection(this);
-    SensorListener sensorListener;
     static GoogleMap mMap;
     static Context mContext;
-    public static SocketTask networktask = null;
-    public static Activity otraActividad = null;
     public static int v_countAlive = 0;
     CountDownTimer cdt = null;
     static String btnPrincipal_text = Constants.btnPpal.PONERME_DISPONIBLE, /*servicio,*/ ubicacion = "", fecha = null, v_idmensaje = null,
             v_tipoServicio = "", v_pista = "", v_pista_complemento = "", v_estadoTarificacion = "NUEVA";
     static Boolean coordenadas = false, iniciaSesion = false, confirmando = false, v_primera_lectura_gps = false, v_EnSitio = false, v_ruteo = false;
     public static Boolean v_tarificando = false, //tan pronto le da cumplir al servicio se pone en true;
-            v_enviando_ubicaciones = false, v_listaPendiente = false, v_desconexion = true, v_disponible = false,
+            v_listaPendiente = false, v_desconexion = true, v_disponible = false,
             v_sonando = false, v_cancelado = false, v_autenticado = false, enturnado=false,tiempo_espera=false,
-            v_servicio = false, v_tts = true, v_preftts = false;
+            v_servicio = false, v_tts = true, v_preftts = false, viaje_interrumpido = false;
     static boolean pendiente, running2 = false, v_tmax = false, envia = false, flag = true,
             isCharging = false, pulsaDisponible = false, v_enservicio = false, v_ocupado = false, rec = true;
     static int version_code = 0, aceptando = 30, level = -1, k = 0;
@@ -167,7 +172,7 @@ public class MainActivity extends AppCompatActivity
     static Button btnPrincipal;
     ConnectivityManager conMgr = null;
     Boolean bool_KeepAliveGPS = false;
-    static String v_direccion_servicio, v_direccion_aproval, v_info_adicional_aproval;
+    static String v_direccion_servicio, v_direccion_aproval, v_info_adicional_aproval, v_nombres="", v_placa = "";
     private double distancia;
     MaterialStyledDialog Alert_estadoVale = null;
     CountDownTimer estado_vale_cdt = null;
@@ -198,6 +203,46 @@ public class MainActivity extends AppCompatActivity
     static MapFragment mapFragment = null;
     public static String tipo_tarifa = "0", valor_hora = "0", horas_contratadas = "0";
     public static AlertDialog alertDialogAcciones=null,alertDialogCancelaciones=null;
+    private Messenger mMessengerService;
+    private GoogleApiClient mGoogleApiClient;
+    MapaPrincipalFragment v_MapaPrincipalFragment;
+    LocationManager lmgr;
+    LocationRequest mLocationRequest;
+    Location mLastLocation;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        log("onStart()");
+        try {
+            bindService(new Intent(this, TaxiLujoService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
+        } catch (Exception e) {
+            log( "onStart: Con el servicio");
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject json = new JSONObject();
+            json.put("cmd", "inicio");
+
+            Bundle bundle = new Bundle();
+            bundle.putString("json", json.toString());
+
+            try {
+                //Class fragmentClass = MapaPrincipalFragment.class;
+                v_MapaPrincipalFragment = MapaPrincipalFragment.newInstance();
+                fragment = v_MapaPrincipalFragment;
+                fragment.setArguments(bundle);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commitAllowingStateLoss();
+            fragmentManager.addOnBackStackChangedListener(this);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,11 +251,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        gpsLoggerServiceIntent = new Intent(this, GPSLogger.class);
-        sensorListener = new SensorListener();
-        startService(gpsLoggerServiceIntent);
-        bindService(gpsLoggerServiceIntent, gpsLoggerConnection, 0);
-        sensorListener.register(this);
+
         mContext = this;
 
         deviceManger = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -220,17 +261,6 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Add fragment con el mapa principal
-        Fragment fragment_ = null;
-        Class fragmentClass = MapaPrincipalFragment.class;
-        try {
-            fragment_ = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment_).commitAllowingStateLoss();
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -297,6 +327,46 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        buildGoogleApiClient();
+        lmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        lmgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 100, this);
+
+        if(!bool_KeepAliveGPS) {
+            bool_KeepAliveGPS=true;
+
+            runnable = new Runnable() {
+                public void run() {
+                    afficher();
+                    tt_handler.postDelayed(runnable, 1000);
+                }
+            };
+
+            tt_handler.postDelayed(runnable, 1000);
+        }
+    }
+
+    synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(com.google.android.gms.location.LocationServices.API)
+                .build();
+        new Thread(new Runnable() {
+            public void run() {
+                //Aquí ejecutamos nuestras tareas costosas
+                mGoogleApiClient.connect();
+            }
+        }).start();
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle bundle){
         super.onSaveInstanceState(bundle);
     }
@@ -317,7 +387,15 @@ public class MainActivity extends AppCompatActivity
             Inicio_sesion.datasource.updateServtipoCancela("-1");
             if (v_clave.equals(clave)) {
                 confirmando = true;
-                Inicio_sesion.datasource.create("04|" + v_idServicio + "|" + v_latitud + "|" + v_longitud + "|" + v_estadoTarificacion, Constants.ACTION.TRAMA_X_ENVIAR);
+                try {
+                    JSONObject jObj2 = new JSONObject();
+                    jObj2.put("cmd", "04");
+                    jObj2.put("s_id", v_idServicio);
+                    jObj2.put("estado", v_estadoTarificacion);
+                    Inicio_sesion.datasource.create(jObj2.toString(), "04");
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
                 v_estadoTarificacion = "NUEVA";
                 v_ubicacion = 0;
                 bsdFragment_Cumplir.dismiss();
@@ -340,7 +418,16 @@ public class MainActivity extends AppCompatActivity
         if(!action.equals("")) {
             Inicio_sesion.datasource.updateServtipoCancela(action);
             confirmando = true;
-            Inicio_sesion.datasource.create("11|" + action + "|" + v_idServicio + "|" + v_latitud + "|" + v_longitud, Constants.ACTION.TRAMA_X_ENVIAR);
+            try {
+                JSONObject jObj2 = new JSONObject();
+                jObj2.put("cmd", "11");
+                jObj2.put("s_id", v_idServicio);
+                jObj2.put("tipo_cancela", action);
+                Inicio_sesion.datasource.create(jObj2.toString(), "11");
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
             v_ubicacion = 0;
             toast("Enviando Servicio Cancelado");
         }
@@ -359,7 +446,15 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "Escanear QR":
                 confirmando = true;
-                Inicio_sesion.datasource.create("04|" + v_idServicio + "|" + v_latitud + "|" + v_longitud + "|" + v_estadoTarificacion, Constants.ACTION.TRAMA_X_ENVIAR);
+                try {
+                    JSONObject jObj2 = new JSONObject();
+                    jObj2.put("cmd", "04");
+                    jObj2.put("s_id", v_idServicio);
+                    jObj2.put("estado", v_estadoTarificacion);
+                    Inicio_sesion.datasource.create(jObj2.toString(), "04");
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
                 v_estadoTarificacion = "NUEVA";
                 v_ubicacion = 0;
                 break;
@@ -466,21 +561,19 @@ public class MainActivity extends AppCompatActivity
 
     private void pagar_vale_envio() {
 
-            //String vale_id = Inicio_sesion.datasource.select("vale_id");
-           // String servicio_id = Inicio_sesion.datasource.select("vale_servicio");
-            try {
-                JSONObject jObj2 = new JSONObject();
-                jObj2.put("cmd", "69");
-                jObj2.put("empresa", empresa);
-                jObj2.put("s_id", v_idServicio);
-                jObj2.put("vale", vale_id);
-                jObj2.put("lat", v_latitud + "");
-                jObj2.put("lng", v_longitud + "");
-                jObj2.put("valor", total + "");
-                Inicio_sesion.datasource.create(jObj2.toString(), "69");
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
+        try {
+            JSONObject jObj2 = new JSONObject();
+            jObj2.put("cmd", "69");
+            jObj2.put("empresa", empresa);
+            jObj2.put("s_id", v_idServicio);
+            jObj2.put("vale", vale_id);
+            jObj2.put("lat", v_latitud + "");
+            jObj2.put("lng", v_longitud + "");
+            jObj2.put("valor", total + "");
+            Inicio_sesion.datasource.create(jObj2.toString(), "69");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if (myTimerTarificador != null)
             myTimerTarificador.cancel();
@@ -548,7 +641,13 @@ public class MainActivity extends AppCompatActivity
 
     void acepta_recibir_servicio (){
         cdt.cancel();
-        networktask.SendDataToNetwork("12|" + v_latitud + "|" + v_longitud);
+        try {
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", "12");
+            envia_json(jsonObj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         v_ubicacion = 0;
         //dialog.dismiss();
         if (vibrar != null)
@@ -561,7 +660,6 @@ public class MainActivity extends AppCompatActivity
         en_aceptacion_servicio = false;
     }
 
-    @Override
     public void from_SocketTask(String data) {
         log("RECIBE from_SocketTask: " + data);
         v_countAlive = 0;
@@ -645,7 +743,7 @@ public class MainActivity extends AppCompatActivity
                     confirmando = false;
                     pulsaDisponible = false;
                     pendiente = false;
-                    toast("Servicio Rechazado por el Conductor Confirmado");
+                    toast("Servicio Rechazado por el Conductor");
                     btnPrincipal.setText(Constants.btnPpal.PONERME_DISPONIBLE);
                     btnPrincipal_text = btnPrincipal.getText().toString();
                     Inicio_sesion.datasource.updateServEstado(4);
@@ -658,7 +756,6 @@ public class MainActivity extends AppCompatActivity
 
                     if (switch_turno != null)
                         switch_turno.setChecked(false);
-
 
                     btnPrincipal.setText(Constants.btnPpal.PONERME_DISPONIBLE);
 
@@ -1119,7 +1216,6 @@ public class MainActivity extends AppCompatActivity
                     btnPrincipal_text = btnPrincipal.getText().toString();
                 }
                 btnPrincipal.setBackgroundColor(getResources().getColor(R.color.primary_dark));
-
             }
         }catch (JSONException e){
             e.printStackTrace();
@@ -1141,8 +1237,11 @@ public class MainActivity extends AppCompatActivity
             v_idmensaje = jObj.getString("id");
             switch (msg) {
                 case "25":
-                    ubicacion = v_latitud + "|" + v_longitud + "|" + v_velocidad + "|" + v_precision;
-                    networktask.SendDataToNetwork("25|" + ubicacion);
+
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("cmd", "25");
+                    envia_json(jsonObj);
+
                     v_ubicacion = 0;
                     break;
                 case "27":
@@ -1239,7 +1338,12 @@ public class MainActivity extends AppCompatActivity
 
                     break;
             }
-            networktask.SendDataToNetwork("07|" + v_idmensaje);
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", "07");
+            jsonObj.put("id", v_idmensaje);
+            envia_json(jsonObj);
+
             v_idmensaje = null;
 
             Inicio_sesion.datasource.updateRegistros("mensaje");
@@ -1299,7 +1403,7 @@ public class MainActivity extends AppCompatActivity
         v_enservicio = false;
         btnPrincipal.setText(Constants.btnPpal.PONERME_DISPONIBLE);
         btnPrincipal_text = Constants.btnPpal.PONERME_DISPONIBLE;
-        btnPrincipal.setVisibility(View.GONE);
+        btnPrincipal.setVisibility(View.VISIBLE);
 
         Inicio_sesion.datasource.create("", "vale_cedula");
         Inicio_sesion.datasource.create("", "vale_valor");
@@ -1791,7 +1895,14 @@ public class MainActivity extends AppCompatActivity
                         // get selected value
                         String value = Report_items1[item].toString();
                         System.out.println("Selected position::" + value);
-                        networktask.SendDataToNetwork("23|" + value);
+                        try {
+                            JSONObject jsonObj = new JSONObject();
+                            jsonObj.put("cmd", "23");
+                            jsonObj.put("opcion", value);
+                            envia_json(jsonObj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         toast("Mensaje '" + value + "' Enviado");
                         dialog.dismiss();
                     }
@@ -1810,7 +1921,13 @@ public class MainActivity extends AppCompatActivity
                         flag = false;
                         v_servicio = false;
                         confirmando = true;
-                        Inicio_sesion.datasource.create("10|" + v_latitud + "|" + v_longitud,Constants.ACTION.TRAMA_X_ENVIAR);
+                        try {
+                            JSONObject jObj2 = new JSONObject();
+                            jObj2.put("cmd", "10");
+                            Inicio_sesion.datasource.create(jObj2.toString(), "10");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                         v_ubicacion = 0;
 
                         ponerme_ocupado();
@@ -1828,6 +1945,21 @@ public class MainActivity extends AppCompatActivity
         alert.show();
     }
 
+    void from_MapaPrincipalFragment_onAttach(JSONObject jObj) throws JSONException{
+        log("from_MapaPrincipalFragment_onAttach " + jObj.toString());
+
+        if(getIntent().getExtras()!=null) {
+
+            v_nombres = getIntent().getExtras().getString("nombres");
+            v_placa   = getIntent().getExtras().getString("placa");
+
+            if(mMap != null) {
+                JSONObject jObj2 = new JSONObject(getIntent().getExtras().getString("json"));
+                socket_inicia_sesion(jObj2);
+            }
+        }
+    }
+
     public void from_MapaPrincipalFragment(JSONObject jObj) {
 
         log("from_MapaPrincipalFragment " + jObj.toString());
@@ -1840,7 +1972,11 @@ public class MainActivity extends AppCompatActivity
                         ponerme_disponible();
                     } else if (detalle.equals(Constants.btnPpal.PONERME_OCUPADO)) {
                         if (!v_servicio) {
-                            Inicio_sesion.datasource.create("03|" + v_latitud + "|" + v_longitud, Constants.ACTION.TRAMA_X_ENVIAR);
+
+                            JSONObject jObj2 = new JSONObject();
+                            jObj2.put("cmd", "03");
+                            Inicio_sesion.datasource.create(jObj2.toString(), "03");
+
                             ponerme_ocupado();
                         }
                     } else if (detalle.equals(Constants.btnPpal.MOSTRAR_DIRECCION)) {
@@ -1894,7 +2030,15 @@ public class MainActivity extends AppCompatActivity
                     if(!tipo_cancela.equals("")) {
                         Inicio_sesion.datasource.updateServtipoCancela(tipo_cancela);
                         confirmando = true;
-                        Inicio_sesion.datasource.create("11|" + tipo_cancela + "|" + v_idServicio + "|" + v_latitud + "|" + v_longitud, Constants.ACTION.TRAMA_X_ENVIAR);
+                        try {
+                            JSONObject jObj2 = new JSONObject();
+                            jObj2.put("cmd", "11");
+                            jObj2.put("s_id", v_idServicio);
+                            jObj2.put("tipo_cancela", tipo_cancela);
+                            Inicio_sesion.datasource.create(jObj2.toString(), "11");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                         v_ubicacion = 0;
                         toast("Enviando Servicio Cancelado");
                     }
@@ -1919,13 +2063,24 @@ public class MainActivity extends AppCompatActivity
                         case "En sitio":
                             en_sitio();
                             break;
+                        case "onAttach":
+                            from_MapaPrincipalFragment_onAttach(jObj);
+                            break;
                         case "Ingresar Clave":
                             bsdFragment_Cumplir = BsModalCumplir.newInstance();
                             bsdFragment_Cumplir.show(getSupportFragmentManager(), "bsdFragment_Cumplir");
                             break;
                         case "Escanear QR":
                             confirmando = true;
-                            Inicio_sesion.datasource.create("04|" + v_idServicio + "|" + v_latitud + "|" + v_longitud + "|" + v_estadoTarificacion, Constants.ACTION.TRAMA_X_ENVIAR);
+                            try {
+                                JSONObject jObj2 = new JSONObject();
+                                jObj2.put("cmd", "04");
+                                jObj2.put("s_id", v_idServicio);
+                                jObj2.put("estado", v_estadoTarificacion);
+                                Inicio_sesion.datasource.create(jObj2.toString(), "04");
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
                             v_estadoTarificacion = "NUEVA";
                             v_ubicacion = 0;
                             break;
@@ -1948,8 +2103,8 @@ public class MainActivity extends AppCompatActivity
                             rechazar_servicio_aceptado();
                             break;
                         case "Compartir Ubicación":
-                            String share_text = "Información de " + Inicio_sesion.v_nombres +
-                                    "\nHola, quiero informarte que estoy usando la app " + getString(R.string.app_name) + " y me encuentro conduciendo el vehículo " + Inicio_sesion.tv_placa +
+                            String share_text = "Información de " + v_nombres +
+                                    "\nHola, quiero informarte que estoy usando la app " + getString(R.string.app_name) + " y me encuentro conduciendo el vehículo " + v_placa +
                                     ".\npuedes ver mi ubicación actual en https://maps.google.com?q=" + v_latitud + "," + v_longitud;
 
                             Intent intent = new Intent(Intent.ACTION_SEND);
@@ -1963,6 +2118,27 @@ public class MainActivity extends AppCompatActivity
             }
         }catch (JSONException e){
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void fragmentMapaPrincipal_onMapReady() {
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            String value = b.getString("json");
+            try {
+                JSONObject jObj = new JSONObject(value);
+                if (jObj.get("servicio").equals("")) {
+                    log("fragmentMapaPrincipal_onMapReady cargando servicio activo");
+                    revisa_servicio_pendiente(jObj);
+                    if(jObj.getString("estado").equals("86")) {
+                        v_estadoTarificacion = "RESUME";
+                        comienza_tarificador("4");
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -2089,14 +2265,10 @@ public class MainActivity extends AppCompatActivity
 
         try {
             if(leyendo_qr){
-                try {
                     JSONObject jsonObj = new JSONObject();
                     jsonObj.put("cmd", "A8");
                     jsonObj.put("servicio", jObj.getString("id"));
                     envia_json(jsonObj);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }else {
                 if (!v_ocupado) {
                     jServicio = jObj;
@@ -2178,7 +2350,6 @@ public class MainActivity extends AppCompatActivity
                         }
                     });
 
-
                     if (tempoView != null)
                         tempoView.setText(aceptando + " segs");
 
@@ -2236,7 +2407,7 @@ public class MainActivity extends AppCompatActivity
                                                 bsdFragment_ServiceAproval.dismiss();
 
 
-                                            Switch switch_turno = (Switch) findViewById(R.id.switch_turno);
+                                            Switch switch_turno = findViewById(R.id.switch_turno);
 
                                             if(switch_turno!=null)
                                                 switch_turno.setChecked(false);
@@ -2251,7 +2422,10 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     if (cdt != null)
                         cdt.cancel();
-                    networktask.SendDataToNetwork("14|" + v_latitud + "|" + v_longitud);
+
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("cmd", "14");
+                    envia_json(jsonObj);
 
                     Switch switch_turno = findViewById(R.id.switch_turno);
 
@@ -2280,7 +2454,6 @@ public class MainActivity extends AppCompatActivity
         try {
             v_resultado = null;
             String v_direccion, v_indicacion, v_unidad, v_descripcion, v_nombre;
-            //02|id_servicio|clave|direccion|barrio|latitud|longitud|unidad|descripcion|nombre|tipo_servicio|empresa_vale|tiempo para cumplir|indicacion
 
             v_idServicio = jObj.getString("servicio");
             v_clave = jObj.getString("clave");
@@ -2327,10 +2500,6 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         return msg;
-    }
-
-    public static void servicios_ubicaciones(String trama){
-        networktask.SendDataToNetwork(trama);
     }
 
     private void ponerme_ocupado() {
@@ -2501,8 +2670,8 @@ public class MainActivity extends AppCompatActivity
 
         return tokens;
     }
-
-    public static void onLocationChanged3(Location location) {
+    @Override
+    public void onLocationChanged(Location location) {
         //log("onLocationChanged " + location.toString());
 
         String str = String.format("%.5f", location.getLatitude());
@@ -2555,14 +2724,66 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
-    public void setGpsLogger(GPSLogger l) {
-        this.gpsLogger = l;
-        gpsLogger.registerClient(MainActivity.this);
     }
 
-    public GPSLogger getGpsLogger() {
-        return gpsLogger;
+    @Override
+    public void onProviderEnabled(String provider) {
+        log("onProviderEnabled provider " + provider);
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        log("onProviderDisabled provider " + provider);
+        updateClient("1");
+        try {
+            JSONObject jObj = new JSONObject();
+            jObj.put("cmd", "B4");
+            jObj.put("lat", v_latitud + "");
+            jObj.put("lng", v_longitud + "");
+            jObj.put("date_gps", v_fechaGPS + "");
+            Inicio_sesion.datasource.create(jObj.toString(),"B4");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateClient(final String s) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false).setTitle("GPS");
+
+        final AlertDialog alert;
+        alert = builder.create();
+
+        final ScrollView s_view = new ScrollView(getApplicationContext());
+        final TextView t_view = new TextView(getApplicationContext());
+        t_view.setPadding(30, 5, 20, 10);
+
+        t_view.setTextColor(Color.BLACK);
+
+        t_view.setTextSize(v_tamanoFuente);
+        s_view.addView(t_view);
+        alert.setView(s_view);
+
+        alert.show();
+
+        new CountDownTimer(7000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if(s.equals("1"))
+                    t_view.setText("Por inactivación del GPS la aplicación se cerrará en " + (millisUntilFinished / 1000) + " segs");
+                else if(s.equals("2"))
+                    t_view.setText("Por activación de ubicaciones falsas la aplicación se cerrará en " + (millisUntilFinished / 1000) + " segs");
+            }
+
+            @Override
+            public void onFinish() {
+                finish();
+            }
+        }.start();
     }
 
     private static void log(String s) {
@@ -2579,8 +2800,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        // clear the notification area when the app is opened
-       NotificationUtils.clearNotifications(getApplicationContext());
         if(en_aceptacion_servicio) {
             if (bsdFragment_ServiceAproval != null)
                 bsdFragment_ServiceAproval.dismiss();
@@ -2611,7 +2830,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Class fragmentClass=null;
@@ -2714,58 +2933,85 @@ public class MainActivity extends AppCompatActivity
     public void onListFragmentInteraction(DummyContentHistorialChat.DummyItem item) {
         log("onListFragmentInteraction DummyContentHistorialChat");
     }
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mMessengerService = new Messenger(service);
+
+            Message message = Message.obtain(null, TaxiLujoService.MSJ_NEW_ACTIVITY);
+            sendMessageToSocket(message);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mMessengerService = null;
+            log( "onServiceDisconnected: Detectada la desconexión del servicio");
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    Messenger mActivityMessenger = new Messenger(new Handler() {
+        @Override
+        public String toString() {
+            return super.toString();
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case TaxiLujoService.MSJ_SEND_SOCKET:
+                    from_SocketTask(msg.obj.toString());
+                    break;
+                case TaxiLujoService.MSJ_SOCKET_ERROR:
+                    //showAlertDialog(getString(R.string.text_error_socket_server), false);
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    });
+
+    private void sendMessageToSocket(Message message) {
+        try {
+            message.replyTo = mActivityMessenger;
+            if(mMessengerService!=null)
+                mMessengerService.send(message);
+        } catch (RemoteException error) {
+            log("onServiceConnected: No es posible enviar el mensaje al servicio");
+            error.printStackTrace();
+        }
+    }
 
     @Override
     protected void onDestroy() {
+        log("onDestroy");
         super.onDestroy();
 
-        log("onDestroy");
+        /*NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if(nManager!=null)
+            nManager.cancelAll();*/
 
-        try {
-            if (SocketTask.nsocket != null)
-                SocketTask.nsocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        stopService(new Intent(getApplicationContext(), TaxiLujoService.class));
+        if (mMessengerService != null) {
+            unbindService(mServiceConnection);
+            mMessengerService = null;
         }
-
-        Intent stopIntent = new Intent(MainActivity.this, GPSLogger.class);
-        stopService(stopIntent);
-
-        // stop sensors
-        sensorListener.unregister();
 
         if (tts != null) {
             tts.stop();
             tts.shutdown();
         }
 
-        if(tt_handler!=null && runnable!=null)
+        if(runnable!=null)
             tt_handler.removeCallbacks(runnable);
 
-        Inicio_sesion.salir();
+        if(mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
 
     }
 
-    @Override
-    public void onSocketConnected(String data) {
-        //onSocketConnected
-        log("onSocketConnected");
-
-        if(!bool_KeepAliveGPS) {
-            bool_KeepAliveGPS=true;
-
-            runnable = new Runnable() {
-                public void run() {
-                    afficher();
-                    tt_handler.postDelayed(runnable, 1000);
-                }
-            };
-
-            tt_handler.postDelayed(runnable, 1000);
-        }
-    }
-
-    void afficher(){
+    synchronized void afficher(){
 
         if(tiempo_espera){
             TextView tv_tiempo_espera = findViewById(R.id.tv_tiempo_espera);
@@ -2812,37 +3058,24 @@ public class MainActivity extends AppCompatActivity
         v_countAlive++;
 
         if(v_servicio)
-            alive = 5;
+            alive = 10;
         else
             alive = 35;
 
         if (v_countAlive >= alive) {
             v_countAlive = 0;
-            if (networktask != null) {
-                try {
-                    JSONObject jObj3 = new JSONObject();
-                    jObj3.put("cmd", "18");
-                    jObj3.put("bearing", v_bearing+"");
-                    envia_json(jObj3);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            try {
+                JSONObject jObj3 = new JSONObject();
+                jObj3.put("cmd", "18");
+                jObj3.put("bearing", v_bearing + "");
+                envia_json(jObj3);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
         if (k >= reconector) {
             k = 0;
-
-            if (v_desconexion) {
-                v_desconexion = false;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {// reconecta si hay desconexión
-                        if (rec)
-                            conectate();
-                    }
-                });
-            }
         }
 
         if (v_desconexion) {
@@ -2869,8 +3102,17 @@ public class MainActivity extends AppCompatActivity
 
         //revisa si hay conexion para enviar las ubicaciones del recorrido
         if (!v_desconexion) {
-            int cantidad = Inicio_sesion.datasource.selectUbicacionPendientes();
-            if (cantidad == 0) {
+
+
+                JSONArray jArr = Inicio_sesion.datasource.selectUbicacionPendientes();
+                for (int i = 0; i < jArr.length(); i++) {
+                    try {
+                        servicios_ubicaciones(jArr.getJSONObject(i));
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+
                 try {
                     JSONObject jObj = Inicio_sesion.datasource.select_tipo_para_enviar("registra_valor_servicio");
                     if (jObj.length() != 0) {
@@ -2894,43 +3136,36 @@ public class MainActivity extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
 
             trama_x_enviar_contador++;
             if (trama_x_enviar_contador >= 2) {
                 //envia tramas guardadas en sqlite (cumplir,cancelar,en sitio,rechazar, etc)
-                String[] v_tipo = {Constants.ACTION.TRAMA_X_ENVIAR, "CU","V1","V2","34","A7","24","A9","B3","B4","C4","C5","69"};
+                String[] v_tipo = {Constants.ACTION.TRAMA_X_ENVIAR, "CU", "V1", "V2", "34", "A7", "24", "A9", "B3", "B4", "C4", "C5", "69", "03", "04", "11", "10"};
 
                 for (String aV_tipo : v_tipo) {
-                    final String trama_x_enviar = Inicio_sesion.datasource.select_v2(aV_tipo);
+                    String trama_x_enviar = Inicio_sesion.datasource.select_v2(aV_tipo);
                     if (!trama_x_enviar.equals("")) {
-                        trama_x_enviar_contador = 0;
-                        log("ENVIANDO TRAMA PENDIENTE " + trama_x_enviar);
-                        networktask.SendDataToNetwork(trama_x_enviar);
+                        try {
+                            JSONObject jEnviar = new JSONObject(trama_x_enviar);
+                            trama_x_enviar_contador = 0;
+                            log("ENVIANDO TRAMA PENDIENTE " + trama_x_enviar);
+                            //Message message = Message.obtain(null, TaxiLujoService.MSJ_SEND_SOCKET, trama_x_enviar);
+                            // sendMessageToSocket(message);
+                            envia_json(jEnviar);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         }
     }
 
-    public void conectate() {
-        // PRIMERO VALIDAMOS QUE HAYA CONFIGURADO UN NUMERO DE UNIDAD PARA ESTA
-        // TERMINAL SI NO HAY, SE ENVIA LA SOLICITUD DE CONFIGURACION
-        // SI YA EXISTE SE ENVIAN LOS DATOS QUE EL USUARIO HA INGRESADO
-        try {
 
-            if (networktask != null)
-                networktask.cancel(true);
-            if (SocketTask.nsocket != null)
-                SocketTask.nsocket.close();
 
-            networktask = new SocketTask(Inicio_sesion.v_ip, Inicio_sesion.v_puerto, this);
-            networktask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    void servicios_ubicaciones(JSONObject jObj){
+        Message message = Message.obtain(null, TaxiLujoService.MSJ_SEND_SOCKET, jObj);
+        sendMessageToSocket(message);
     }
 
     private static void reconexion(String incoming, int tiempo) {
@@ -3174,32 +3409,15 @@ public class MainActivity extends AppCompatActivity
             espere.dismiss();
     }
 
-    public static void login() {
-
+    void envia_json(JSONObject jObj) {
         try {
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("cmd", "19");
-            jsonObj.put("usuario", Inicio_sesion.usuario);
-            jsonObj.put("tipo", "driver");
-            jsonObj.put("clave", Inicio_sesion.clave);
-            jsonObj.put("imei", Inicio_sesion.v_imei);
-            jsonObj.put("nick", Inicio_sesion.v_identificador+"");
-            jsonObj.put("iniciado", "si");
-            jsonObj.put("veq_id", Inicio_sesion.v_vehiculo);
-            envia_json(jsonObj);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void envia_json(JSONObject jObj) {
-        try {
-            jObj.put("lat", v_latitud + "");
-            jObj.put("lng", v_longitud + "");
-            jObj.put("date_gps", v_fechaGPS + "");
-            jObj.put("bearing", v_bearing + "");
-            String nsend = jObj.toString();
-            networktask.SendDataToNetwork(nsend);
+            jObj.put("lat"     , String.valueOf(v_latitud));
+            jObj.put("lng"     , String.valueOf(v_longitud));
+            jObj.put("date_gps", String.valueOf(v_fechaGPS));
+            jObj.put("bearing" , String.valueOf(v_bearing));
+            jObj.put("milis"   , String.valueOf(System.currentTimeMillis()));
+            Message message = Message.obtain(null, TaxiLujoService.MSJ_SEND_SOCKET, jObj);
+            sendMessageToSocket(message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -3241,11 +3459,6 @@ public class MainActivity extends AppCompatActivity
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 log("Lenguaje No soportado");
                 v_tts = false;
-                // missing data, install it
-				/*
-				 * Intent installIntent = new Intent();
-				 * installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA); startActivity(installIntent);
-				 */
             }
 
         } else {
@@ -3258,9 +3471,6 @@ public class MainActivity extends AppCompatActivity
 			 * installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA); startActivity(installIntent);
 			 */
         }
-
-        networktask = new SocketTask(Inicio_sesion.v_ip, Inicio_sesion.v_puerto, this);
-        networktask.execute();
     }
 
     @Override
@@ -3271,31 +3481,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void from_Fragment_mensajes(JSONObject jObj) {
         log("from_Fragment_mensajes: " + jObj.toString());
-
-       /*Bundle bundle = new Bundle();
-        try {
-            if(!jObj.getString("id").equals("0")) {
-                String from_postgres = Inicio_sesion.datasource.get_from_postgres_id(jObj.getString("id"));
-                log("test " + from_postgres);
-                JSONObject jObj2 = new JSONObject(from_postgres);
-                if(jObj2.has("pic"))
-                    jObj.put("user_pic", jObj2.getString("pic"));
-                else {
-                    if(jServicio!=null)
-                        jObj.put("user_pic", jServicio.getString("user_pic"));
-                }
-                jObj.put("user_id", jObj2.getString("origen"));
-                jObj.put("user_name", jObj2.getString("origen_name"));
-            }
-            bundle.putString("json", jObj.toString());
-            Class fragmentClass = Fragment_conversacion.class;
-            fragment = (Fragment) fragmentClass.newInstance();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragment.setArguments(bundle);
-            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commitAllowingStateLoss();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
 
         DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -3317,6 +3502,56 @@ public class MainActivity extends AppCompatActivity
     }
 
     private FragmentRefreshListener fragmentRefreshListener;
+
+    @Override
+    public void onBackStackChanged() {
+        log("onBackStackChanged()");
+        FragmentManager fm = getSupportFragmentManager();
+        int backStackEntryCount = fm.getBackStackEntryCount();
+        for (int i = 0; i < backStackEntryCount; i++) {
+            LogBackStackEntry(i + "", fm.getBackStackEntryAt(i));
+        }
+    }
+
+    public static void LogBackStackEntry(String item,FragmentManager.BackStackEntry entry ){
+        if(entry!=null){
+            log(item + ". BackStackEntryName: " + entry.getName());
+        }else{
+            log("BackStackEntryName: <NULL>");
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        log("GPS onConnected");
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(10000); // Update location every ten seconds
+        //mLocationRequest.setSmallestDisplacement(20);//cada 20 metros
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            v_latitud = mLastLocation.getLatitude();
+            v_longitud = mLastLocation.getLongitude();
+            if(mMap!=null)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(v_latitud, v_longitud) , 16f));
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        log("GPS onConnectionSuspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 
     interface FragmentRefreshListener{
         void onRefresh(JSONObject jObj);
@@ -3362,55 +3597,58 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void updateClient(final String s) {
+    void socket_inicia_sesion(JSONObject jObj) throws JSONException{
+        String respuesta = jObj.getString("msj");
+        if (respuesta.equals("")) {
+            iniciaSesion = true;
 
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder
-                    // .setMessage(msg)
-                    .setCancelable(false).setTitle("GPS");
+            if (jObj.has("valor") && !viaje_interrumpido)
+                total = Integer.parseInt(jObj.getString("valor"));
 
-            final AlertDialog alert;
-            alert = builder.create();
+            if (jObj.has("valor"))
+                valor_anterior_a_la_interrupcion = Integer.parseInt(jObj.getString("valor"));
 
-            final ScrollView s_view = new ScrollView(getApplicationContext());
-            final TextView t_view = new TextView(getApplicationContext());
-            t_view.setPadding(30, 5, 20, 10);
+            if (jObj.has("medio_pago"))
+                s_medio_pago = jObj.getString("medio_pago");
 
-            t_view.setTextColor(Color.BLACK);
+            IniciaSesion();
+            if (pulsaDisponible) {
+                // Si el dispositivo estaba en estado disponible
+                // antes de recibir una desconexión, entonces se
+                // pone disponible automáticamente
+                ponerme_disponible();
+            }
 
-            t_view.setTextSize(MainActivity.v_tamanoFuente);
-            s_view.addView(t_view);
-            alert.setView(s_view);
+            if (jObj.has("destino"))
+                v_dir_destino = jObj.getString("destino");
 
-            alert.show();
+            if (jObj.has("servicio"))
+                v_idServicio = jObj.getString("servicio");
 
-            new CountDownTimer(7000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    if(s.equals("1"))
-                        t_view.setText("Por inactivación del GPS la aplicación se cerrará en " + (millisUntilFinished / 1000) + " segs");
-                    else if(s.equals("2"))
-                        t_view.setText("Por activación de ubicaciones falsas la aplicación se cerrará en " + (millisUntilFinished / 1000) + " segs");
-                }
+            revisa_servicio_pendiente(jObj);
 
-                @Override
-                public void onFinish() {
-                    onDestroy();
-                }
-            }.start();
-    }
-
-    @Override
-    public void setlmg(Location mLastLocation) {
-
-        if (mLastLocation != null && mMap!=null) {
-            v_latitud = mLastLocation.getLatitude();
-            v_longitud = mLastLocation.getLongitude();
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(v_latitud, v_longitud) , 16f));
-
+            v_MapaPrincipalFragment.fromMainActivity_attached(jObj);
+        } else {
+            toast(respuesta);
+            v_autenticado = false;
         }
     }
+
+    public void IniciaSesion() {
+        log("IniciaSesion");
+        v_autenticado = true;
+        log("v_disponible " + v_disponible);
+
+        if (v_disponible) {
+            v_disponible = false;
+            if (toast != null)
+                toast.cancel();
+            ponerme_disponible();
+        }
+
+        Inicio_sesion.datasource.create(Inicio_sesion.usuario, "cedula");
+
+    }
+
 
 }

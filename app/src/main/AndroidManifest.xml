@@ -62,25 +62,18 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"/>
 
-        <service android:name="com.conductor.aeroturex.service.gps.GPSLogger" android:exported="false">
-            <intent-filter>
-                <action android:name="com.conductor.aeroturex.intent.GPS_SERVICE" />
-            </intent-filter>
-        </service>
-
-        <provider android:name="com.conductor.aeroturex.db.TrackContentProvider"
-            android:authorities="com.conductor.aeroturex.provider"
+        <service
+            android:name="com.conductor.aeroturex.service.TaxiLujoService"
+            android:enabled="true"
             android:exported="false" />
-
-        <receiver android:name="com.conductor.aeroturex.receiver.MediaButtonReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </receiver>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <meta-data
+        android:name="io.fabric.ApiKey"
+        android:value="6c4909116d839e904ba4058f9a63e1fb5e1de63d" />
 
     </application>
 

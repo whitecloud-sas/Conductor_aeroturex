@@ -58,6 +58,7 @@ public class MapaPrincipalFragment extends Fragment implements OnMapReadyCallbac
     // The container Activity must implement this interface so the frag can deliver messages
      interface On_MapaPrincipal_Listener {
         void from_MapaPrincipalFragment(JSONObject position);
+        void fragmentMapaPrincipal_onMapReady();
     }
 
     FloatingActionButton fab;
@@ -107,7 +108,7 @@ public class MapaPrincipalFragment extends Fragment implements OnMapReadyCallbac
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if(rootView==null){
             rootView = inflater.inflate(R.layout.fragment_mapa_principal, container, false);
@@ -118,25 +119,39 @@ public class MapaPrincipalFragment extends Fragment implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        log("onMapReady()");
+
         MainActivity.mMap = googleMap;
-        MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.mapstyle_grayscale);
+
+        MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(MainActivity.mContext, R.raw.mapstyle_grayscale);
         MainActivity.mMap.setMapStyle(style);
+
         //move the camera
-        LatLng cali = new LatLng(v_latitud, v_longitud);
-        MainActivity.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cali , 16f));
+        LatLng cali = new LatLng(MainActivity.v_latitud, MainActivity.v_longitud);
+        MainActivity.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cali, 16f));
+
         mUiSettings = googleMap.getUiSettings();
         mUiSettings.setCompassEnabled(false);
+
+        mCallback.fragmentMapaPrincipal_onMapReady();
+
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle bundle) {
+        super.onActivityCreated(bundle);
+        log("onActivityCreated " );
+        MainActivity.mapFragment = (MapFragment) (getActivity()).getFragmentManager().findFragmentById(R.id.map);
+        MainActivity.mapFragment.getMapAsync(MapaPrincipalFragment.this);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // FAB
         fab = view.findViewById(R.id.locate);
-
-        MainActivity.mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
-        MainActivity.mapFragment.getMapAsync(this);
 
         // Bottom Sheets
         viewFlipper = view.findViewById(R.id.bsViewSwitch);
@@ -542,12 +557,21 @@ public class MapaPrincipalFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        log("onAttach");
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
+
         try {
             mCallback = (On_MapaPrincipal_Listener) context;
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", "onAttach");
+            mCallback.from_MapaPrincipalFragment(jsonObj);
+
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()  + " must implement OnHeadlineSelectedListener");
+        } catch (JSONException e){
+            e.printStackTrace();
         }
     }
 
@@ -555,6 +579,10 @@ public class MapaPrincipalFragment extends Fragment implements OnMapReadyCallbac
     public void onDetach() {
         super.onDetach();
         mCallback = null;
+    }
+
+    public void fromMainActivity_attached(JSONObject jObj) throws JSONException{
+        log("fromMainActivity_attached " + jObj.toString());
     }
 
     private static void log(String s) {

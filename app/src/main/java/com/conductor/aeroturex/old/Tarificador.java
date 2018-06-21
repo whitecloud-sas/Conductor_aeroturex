@@ -6,7 +6,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.conductor.aeroturex.Inicio_sesion;
 import com.conductor.aeroturex.MainActivity;
 import com.conductor.aeroturex.MapaPrincipalFragment;
 
@@ -14,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,9 +35,6 @@ public class Tarificador extends Activity implements Runnable {
     float tmetrounidad = 0, tpreciounidad, v_TiempoEsperaCantidad = 0, tminima;
     MyTimerTask myTask;
     NumberFormat format;
-
-    ArrayList<String> ruta_latitud = new ArrayList<>();
-    ArrayList<String> ruta_longitud = new ArrayList<>();
 
     public static Activity getActivity() {
         return activity;
@@ -255,43 +250,12 @@ public class Tarificador extends Activity implements Runnable {
             });
 
             if (enviar_ubicacion) {
-                ruteo();
                 enviar_ubicacion = false;
                 tiempo_espera = "f";
             }
 
         }
 
-        void ruteo() {
-            try {
-                if (!MainActivity.v_idServicioRuta.equals("0")) {
-
-                    ruta_latitud.add(MainActivity.v_latitud + "");
-                    ruta_longitud.add(MainActivity.v_longitud + "");
-
-                    JSONObject jsonObj = new JSONObject();
-                    jsonObj.put("su_id", "0");
-                    jsonObj.put("su_latitud", MainActivity.v_latitud);
-                    jsonObj.put("su_longitud", MainActivity.v_longitud);
-                    jsonObj.put("su_precio", MainActivity.total);
-                    jsonObj.put("su_distancia", (int) MainActivity.v_distanciaTotal);
-                    jsonObj.put("su_tiempoespera", tiempo_espera);
-                    jsonObj.put("su_orientacion", MainActivity.v_bearing);
-                    jsonObj.put("su_velocidad", MainActivity.v_velocidad);
-                    jsonObj.put("su_servicio", MainActivity.v_idServicioRuta);
-                    jsonObj.put("su_fechagps", MainActivity.v_fechaGPS);
-                    jsonObj.put("su_precision", MainActivity.v_precision);
-                    jsonObj.put("su_esbuena", 1);
-
-                    Inicio_sesion.datasource.createUbicacion(jsonObj);
-
-                } else {
-                    activity.finish();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private static void log(String s) {

@@ -7,6 +7,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -14,11 +16,11 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.whitecloud.driver.Inicio_sesion;
-import com.whitecloud.driver.MainActivity;
-import com.whitecloud.driver.R;
-import com.whitecloud.driver.old.AsyncSocketHandler;
-import com.whitecloud.driver.old.AsyncSocketThread;
+import com.conductor.aeroturex.Inicio_sesion;
+import com.conductor.aeroturex.MainActivity;
+import com.conductor.aeroturex.R;
+import com.conductor.aeroturex.old.AsyncSocketHandler;
+import com.conductor.aeroturex.old.AsyncSocketThread;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -201,7 +203,7 @@ public class TaxiLujoService extends Service {
 
         @Override
         public void didDisconnect(Exception error) {
-            log( "didDisconnect: Se desconecto el socket");
+            log( "didDisconnect: " + error.toString());
             MainActivity.v_desconexion = true;
             if(socketThread!=null)
                 socketThread.interrupt();
@@ -233,22 +235,27 @@ public class TaxiLujoService extends Service {
             MainActivity.v_desconexion = false;
             log( "didConnect: La conexión con el socket fue satisfactoria");
             try {
+                PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+
                 JSONObject jsonObject            = new JSONObject();
                 jsonObject.put("cmd", "19");
                 jsonObject.put("imei",     params.get("imei"));
                 jsonObject.put("tipo", "driver");
                 jsonObject.put("iniciado", RETRY_CONNECTION);
-                jsonObject.put("veq_id", Inicio_sesion.v_vehiculo);
+                jsonObject.put("veq_id",   Inicio_sesion.v_vehiculo);
                 jsonObject.put("usuario",  params.get("usuario").toString());
                 jsonObject.put("clave",    params.get("clave").toString());
                 jsonObject.put("nick",     params.get("nick").toString());
                 jsonObject.put("lat",      String.valueOf(MainActivity.v_latitud));
                 jsonObject.put("lng",      String.valueOf(MainActivity.v_longitud));
+                jsonObject.put("version",  pinfo.versionName);
 
                 socketThread.sendDataToSocket(jsonObject.toString());
             } catch (JSONException error) {
                log( "didConnect: No es posible crear el objeto de Login en el socket");
                error.printStackTrace();
+            }catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
             }
         }
     };

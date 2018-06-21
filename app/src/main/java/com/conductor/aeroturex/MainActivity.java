@@ -2128,7 +2128,7 @@ public class MainActivity extends AppCompatActivity
             String value = b.getString("json");
             try {
                 JSONObject jObj = new JSONObject(value);
-                if (jObj.get("servicio").equals("")) {
+                if (!jObj.get("servicio").equals("")) {
                     log("fragmentMapaPrincipal_onMapReady cargando servicio activo");
                     revisa_servicio_pendiente(jObj);
                     if(jObj.getString("estado").equals("86")) {
